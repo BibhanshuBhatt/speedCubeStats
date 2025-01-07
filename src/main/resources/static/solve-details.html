@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solve Details - SpeedCubeStats</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: #b7c5d3;
+            min-height: 100vh;
+        }
+
+        .navigation {
+            background: #91aeda;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .navigation a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #1a73e8;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navigation a:hover {
+            color: #174ea6;
+        }
+
+        .main-container {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .search-container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-title {
+            font-size: 2.5rem;
+            color: #1a73e8;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            gap: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            font-size: 1.2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #1a73e8;
+        }
+
+        .search-button {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-button:hover {
+            background: #174ea6;
+        }
+
+        .solve-details {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .solve-details.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .detail-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 1rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .detail-value {
+            font-size: 1.2rem;
+            color: #0d3c7a;
+        }
+
+        .error-message {
+            background: #fee6e6;
+            color: #dc3545;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loader {
+            display: none;
+            width: 48px;
+            height: 48px;
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 5px solid #134486;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+<nav class="navigation">
+    <a href="index.html"><i class="fas fa-clock"></i> Timer</a>
+    <a href="solve-details.html"><i class="fas fa-search"></i> Solve Details</a>
+    <a href="today-solves.html"><i class="fas fa-calendar-day"></i> Today's Solves</a>
+    <a href="resources.html"><i class="fas fa-book"></i> Resources</a>
+</nav>
+
+<div class="main-container">
+    <div class="search-container">
+        <h1 class="search-title">Search Solve Details</h1>
+        <div class="search-box">
+            <input type="number"
+                   id="solveId"
+                   class="search-input"
+                   placeholder="Enter solve ID..."
+                   min="1">
+            <button onclick="searchSolve()" class="search-button">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+    </div>
+
+    <div class="loader" id="loader"></div>
+
+    <div class="error-message" id="errorMessage"></div>
+
+    <div class="solve-details" id="solveDetails">
+        <h2>Solve Information</h2>
+        <div class="detail-card">
+            <div class="detail-row">
+                <span class="detail-label">Solve ID</span>
+                <span class="detail-value" id="detailId"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Scramble</span>
+                <span class="detail-value" id="detailScramble"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Time</span>
+                <span class="detail-value" id="detailTime"></span>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Date</span>
+                <span class="detail-value" id="detailDate"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Time of Day</span>
+                <span class="detail-value" id="detailTimeOfDay"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function searchSolve() {
+        const id = document.getElementById('solveId').value;
+        const detailsDiv = document.getElementById('solveDetails');
+        const errorDiv = document.getElementById('errorMessage');
+        const loader = document.getElementById('loader');
+
+        // Reset display
+        detailsDiv.classList.remove('active');
+        errorDiv.style.display = 'none';
+        loader.style.display = 'block';
+
+        fetch(`http://localhost:8080/api/solves/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Solve not found');
+                }
+                return response.json();
+            })
+            .then(data => {
+                loader.style.display = 'none';
+                errorDiv.style.display = 'none';
+                detailsDiv.classList.add('active');
+
+                const timestamp = new Date(data.timestamp);
+
+                document.getElementById('detailId').textContent = data.id;
+                document.getElementById('detailTime').textContent = `${data.time.toFixed(2)} seconds`;
+                document.getElementById('detailDate').textContent = timestamp.toLocaleDateString();
+                document.getElementById('detailTimeOfDay').textContent = timestamp.toLocaleTimeString();
+            })
+            .catch(error => {
+                loader.style.display = 'none';
+                detailsDiv.classList.remove('active');
+                errorDiv.style.display = 'block';
+                errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${error.message}`;
+            });
+    }
+
+    // Allow Enter key to trigger search
+    document.getElementById('solveId').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            searchSolve();
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Solve History - SpeedCubeStats</title>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">-->
+<!--    <style>-->
+<!--        * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--            font-family: 'Arial', sans-serif;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            background: #b7c5d3;-->
+<!--            min-height: 100vh;-->
+<!--        }-->
+
+<!--        .navigation {-->
+<!--            background: #8da8c5;-->
+<!--            padding: 1rem;-->
+<!--            box-shadow: 0 2px 4px rgba(0,0,0,0.1);-->
+<!--            position: fixed;-->
+<!--            width: 100%;-->
+<!--            top: 0;-->
+<!--            z-index: 1000;-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        .navigation a {-->
+<!--            margin: 0 15px;-->
+<!--            text-decoration: none;-->
+<!--            color: #1a73e8;-->
+<!--            font-weight: 500;-->
+<!--            transition: color 0.3s;-->
+<!--        }-->
+
+<!--        .navigation a:hover {-->
+<!--            color: #174ea6;-->
+<!--        }-->
+
+<!--        .main-container {-->
+<!--            margin-top: 80px;-->
+<!--            padding: 2rem;-->
+<!--            max-width: 1200px;-->
+<!--            margin-left: auto;-->
+<!--            margin-right: auto;-->
+<!--        }-->
+
+<!--        .page-title {-->
+<!--            text-align: center;-->
+<!--            color: #1a73e8;-->
+<!--            font-size: 2.5rem;-->
+<!--            margin-bottom: 2rem;-->
+<!--        }-->
+
+<!--        .filters {-->
+<!--            background: #fff;-->
+<!--            padding: 1.5rem;-->
+<!--            border-radius: 15px;-->
+<!--            box-shadow: 0 4px 6px rgba(0,0,0,0.1);-->
+<!--            margin-bottom: 2rem;-->
+<!--            display: flex;-->
+<!--            gap: 1rem;-->
+<!--            flex-wrap: wrap;-->
+<!--            align-items: center;-->
+<!--        }-->
+
+<!--        .filter-group {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 0.5rem;-->
+<!--        }-->
+
+<!--        .filter-group label {-->
+<!--            color: #666;-->
+<!--            font-weight: 500;-->
+<!--        }-->
+
+<!--        .filter-group input, .filter-group select {-->
+<!--            padding: 0.5rem;-->
+<!--            border: 1px solid #ddd;-->
+<!--            border-radius: 5px;-->
+<!--            font-size: 1rem;-->
+<!--        }-->
+
+<!--        .stats-container {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));-->
+<!--            gap: 1.5rem;-->
+<!--            margin-bottom: 2rem;-->
+<!--        }-->
+
+<!--        .stat-card {-->
+<!--            background: #fff;-->
+<!--            padding: 1.5rem;-->
+<!--            border-radius: 15px;-->
+<!--            box-shadow: 0 4px 6px rgba(0,0,0,0.1);-->
+<!--            text-align: center;-->
+<!--            transition: transform 0.3s;-->
+<!--        }-->
+
+<!--        .stat-card:hover {-->
+<!--            transform: translateY(-5px);-->
+<!--        }-->
+
+<!--        .stat-icon {-->
+<!--            font-size: 2rem;-->
+<!--            color: #1a73e8;-->
+<!--            margin-bottom: 1rem;-->
+<!--        }-->
+
+<!--        .stat-value {-->
+<!--            font-size: 1.8rem;-->
+<!--            font-weight: bold;-->
+<!--            color: #1a73e8;-->
+<!--            margin-bottom: 0.5rem;-->
+<!--        }-->
+
+<!--        .stat-label {-->
+<!--            color: #666;-->
+<!--            font-size: 1rem;-->
+<!--        }-->
+
+<!--        .solves-grid {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));-->
+<!--            gap: 1.5rem;-->
+<!--            margin-top: 2rem;-->
+<!--        }-->
+
+<!--        .solve-card {-->
+<!--            background: #fff;-->
+<!--            padding: 1.5rem;-->
+<!--            border-radius: 15px;-->
+<!--            box-shadow: 0 4px 6px rgba(0,0,0,0.1);-->
+<!--            transition: transform 0.3s;-->
+<!--        }-->
+
+<!--        .solve-card:hover {-->
+<!--            transform: translateY(-5px);-->
+<!--        }-->
+
+<!--        .solve-header {-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--            margin-bottom: 1rem;-->
+<!--            padding-bottom: 0.5rem;-->
+<!--            border-bottom: 1px solid #e0e0e0;-->
+<!--        }-->
+
+<!--        .solve-number {-->
+<!--            font-size: 1.2rem;-->
+<!--            font-weight: bold;-->
+<!--            color: #1a73e8;-->
+<!--        }-->
+
+<!--        .solve-time {-->
+<!--            font-size: 1.8rem;-->
+<!--            font-weight: bold;-->
+<!--            color: #1a73e8;-->
+<!--            margin: 1rem 0;-->
+<!--        }-->
+
+<!--        .solve-timestamp {-->
+<!--            color: #666;-->
+<!--            font-size: 0.9rem;-->
+<!--        }-->
+
+<!--        .pagination {-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            gap: 0.5rem;-->
+<!--            margin-top: 2rem;-->
+<!--        }-->
+
+<!--        .pagination button {-->
+<!--            padding: 0.5rem 1rem;-->
+<!--            border: none;-->
+<!--            background: #1a73e8;-->
+<!--            color: white;-->
+<!--            border-radius: 5px;-->
+<!--            cursor: pointer;-->
+<!--            transition: background 0.3s;-->
+<!--        }-->
+
+<!--        .pagination button:hover {-->
+<!--            background: #174ea6;-->
+<!--        }-->
+
+<!--        .pagination button:disabled {-->
+<!--            background: #ccc;-->
+<!--            cursor: not-allowed;-->
+<!--        }-->
+
+<!--        .loader {-->
+<!--            display: none;-->
+<!--            width: 48px;-->
+<!--            height: 48px;-->
+<!--            border: 5px solid #f3f3f3;-->
+<!--            border-radius: 50%;-->
+<!--            border-top: 5px solid #1a73e8;-->
+<!--            animation: spin 1s linear infinite;-->
+<!--            margin: 20px auto;-->
+<!--        }-->
+
+<!--        @keyframes spin {-->
+<!--            0% { transform: rotate(0deg); }-->
+<!--            100% { transform: rotate(360deg); }-->
+<!--        }-->
+
+<!--        @media (max-width: 768px) {-->
+<!--            .stats-container {-->
+<!--                grid-template-columns: repeat(2, 1fr);-->
+<!--            }-->
+
+<!--            .filters {-->
+<!--                flex-direction: column;-->
+<!--                align-items: stretch;-->
+<!--            }-->
+<!--        }-->
+
+<!--        @media (max-width: 480px) {-->
+<!--            .stats-container {-->
+<!--                grid-template-columns: 1fr;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<nav class="navigation">-->
+<!--    <a href="index.html"><i class="fas fa-clock"></i> Timer</a>-->
+<!--    <a href="solve-details.html"><i class="fas fa-search"></i> Solve Details</a>-->
+<!--    <a href="today-solves.html"><i class="fas fa-calendar-day"></i> Today's Solves</a>-->
+<!--    <a href="solve-history.html"><i class="fas fa-history"></i> History</a>-->
+<!--    <a href="resources.html"><i class="fas fa-book"></i> Resources</a>-->
+<!--</nav>-->
+
+<!--<div class="main-container">-->
+<!--    <h1 class="page-title">Solve History</h1>-->
+
+<!--    <div class="filters">-->
+<!--        <div class="filter-group">-->
+<!--            <label>Date Range:</label>-->
+<!--            <input type="date" id="startDate">-->
+<!--            <span>to</span>-->
+<!--            <input type="date" id="endDate">-->
+<!--        </div>-->
+<!--        <div class="filter-group">-->
+<!--            <label>Time Range:</label>-->
+<!--            <input type="number" id="minTime" placeholder="Min (s)" step="0.01">-->
+<!--            <span>to</span>-->
+<!--            <input type="number" id="maxTime" placeholder="Max (s)" step="0.01">-->
+<!--        </div>-->
+<!--        <div class="filter-group">-->
+<!--            <button onclick="applyFilters()" style="padding: 0.5rem 1rem; background: #1a73e8; color: white; border: none; border-radius: 5px; cursor: pointer;">-->
+<!--                Apply Filters-->
+<!--            </button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="loader" id="loader"></div>-->
+
+<!--    <div class="stats-container" id="statsContainer">-->
+<!--        &lt;!&ndash; Stats cards will be inserted here &ndash;&gt;-->
+<!--    </div>-->
+
+<!--    <div class="solves-grid" id="solvesGrid">-->
+<!--        &lt;!&ndash; Solve cards will be inserted here &ndash;&gt;-->
+<!--    </div>-->
+
+<!--    <div class="pagination" id="pagination">-->
+<!--        &lt;!&ndash; Pagination buttons will be inserted here &ndash;&gt;-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    let currentPage = 1;-->
+<!--    const PAGE_SIZE = 12;-->
+<!--    let totalPages = 1;-->
+
+<!--    function loadSolves() {-->
+<!--        const loader = document.getElementById('loader');-->
+<!--        const statsContainer = document.getElementById('statsContainer');-->
+<!--        const solvesGrid = document.getElementById('solvesGrid');-->
+
+<!--        const startDate = document.getElementById('startDate').value;-->
+<!--        const endDate = document.getElementById('endDate').value;-->
+<!--        const minTime = document.getElementById('minTime').value;-->
+<!--        const maxTime = document.getElementById('maxTime').value;-->
+
+<!--        loader.style.display = 'block';-->
+
+<!--        // Build query parameters-->
+<!--        const params = new URLSearchParams({-->
+<!--            page: currentPage - 1,-->
+<!--            size: PAGE_SIZE-->
+<!--        });-->
+
+<!--        if (startDate) params.append('startDate', startDate);-->
+<!--        if (endDate) params.append('endDate', endDate);-->
+<!--        if (minTime) params.append('minTime', minTime);-->
+<!--        if (maxTime) params.append('maxTime', maxTime);-->
+
+<!--        fetch(`http://localhost:8080/api/solves?${params.toString()}`)-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                loader.style.display = 'none';-->
+
+<!--                if (data.content.length === 0) {-->
+<!--                    statsContainer.innerHTML = '<div class="no-solves"><i class="fas fa-info-circle"></i> No solves found</div>';-->
+<!--                    solvesGrid.innerHTML = '';-->
+<!--                    return;-->
+<!--                }-->
+
+<!--                totalPages = data.totalPages;-->
+<!--                updateStats(data.content);-->
+<!--                displaySolves(data.content);-->
+<!--                updatePagination();-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                loader.style.display = 'none';-->
+<!--                console.error('Error:', error);-->
+<!--                statsContainer.innerHTML = '<div class="no-solves"><i class="fas fa-exclamation-circle"></i> Error loading solves</div>';-->
+<!--            });-->
+<!--    }-->
+
+<!--    function updateStats(solves) {-->
+<!--        const times = solves.map(solve => solve.time);-->
+<!--        const avg = times.reduce((a, b) => a + b) / times.length;-->
+<!--        const best = Math.min(...times);-->
+<!--        const worst = Math.max(...times);-->
+
+<!--        const statsContainer = document.getElementById('statsContainer');-->
+<!--        statsContainer.innerHTML = `-->
+<!--            <div class="stat-card">-->
+<!--                <i class="fas fa-hashtag stat-icon"></i>-->
+<!--                <div class="stat-value">${solves.length}</div>-->
+<!--                <div class="stat-label">Displayed Solves</div>-->
+<!--            </div>-->
+<!--            <div class="stat-card">-->
+<!--                <i class="fas fa-stopwatch stat-icon"></i>-->
+<!--                <div class="stat-value">${avg.toFixed(2)}s</div>-->
+<!--                <div class="stat-label">Average Time</div>-->
+<!--            </div>-->
+<!--            <div class="stat-card">-->
+<!--                <i class="fas fa-trophy stat-icon"></i>-->
+<!--                <div class="stat-value">${best.toFixed(2)}s</div>-->
+<!--                <div class="stat-label">Best Time</div>-->
+<!--            </div>-->
+<!--            <div class="stat-card">-->
+<!--                <i class="fas fa-exclamation-circle stat-icon"></i>-->
+<!--                <div class="stat-value">${worst.toFixed(2)}s</div>-->
+<!--                <div class="stat-label">Worst Time</div>-->
+<!--            </div>-->
+<!--        `;-->
+<!--    }-->
+
+<!--    function displaySolves(solves) {-->
+<!--        const solvesGrid = document.getElementById('solvesGrid');-->
+<!--        solvesGrid.innerHTML = solves.map(solve => `-->
+<!--            <div class="solve-card">-->
+<!--                <div class="solve-header">-->
+<!--                    <div class="solve-number">Solve #${solve.id}</div>-->
+<!--                    <i class="fas fa-cube" style="color: #1a73e8;"></i>-->
+<!--                </div>-->
+<!--                <div class="solve-time">${solve.time.toFixed(2)}s</div>-->
+<!--                <div class="solve-timestamp">-->
+<!--                    <i class="far fa-clock"></i>-->
+<!--                    ${new Date(solve.timestamp).toLocaleString()}-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        `).join('');-->
+<!--    }-->
+
+<!--    function updatePagination() {-->
+<!--        const pagination = document.getElementById('pagination');-->
+<!--        pagination.innerHTML = `-->
+<!--            <button onclick="changePage(1)" ${currentPage === 1 ? 'disabled' : ''}>-->
+<!--                <i class="fas fa-angle-double-left"></i>-->
+<!--            </button>-->
+<!--            <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>-->
+<!--                <i class="fas fa-angle-left"></i>-->
+<!--            </button>-->
+<!--            <button disabled>Page ${currentPage} of ${totalPages}</button>-->
+<!--            <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>-->
+<!--                <i class="fas fa-angle-right"></i>-->
+<!--            </button>-->
+<!--            <button onclick="changePage(${totalPages})" ${currentPage === totalPages ? 'disabled' : ''}>-->
+<!--                <i class="fas fa-angle-double-right"></i>-->
+<!--            </button>-->
+<!--        `;-->
+<!--    }-->
+
+<!--    function changePage(page) {-->
+<!--        currentPage = page;-->
+<!--        loadSolves();-->
+<!--    }-->
+
+<!--    function applyFilters() {-->
+<!--        currentPage = 1;-->
+<!--        loadSolves();-->
+<!--    }-->
+
+<!--    // Set default date range to last 30 days-->
+<!--    document.addEventListener('DOMContentLoaded', () => {-->
+<!--        const endDate = new Date();-->
+<!--        const startDate = new Date();-->
+<!--        startDate.setDate(startDate.getDate() - 30);-->
+
+<!--        document.getElementById('startDate').value = startDate.toISOString().split('T')[0];-->
+<!--        document.getElementById('endDate').value = endDate.toISOString().split('T')[0];-->
+
+<!--        loadSolves();-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
